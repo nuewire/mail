@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Tests;
+namespace Nuewire\Mail\Tests;
 
-use Btekno\Mail\Support\EncryptedJsonSettingsStore;
-use Btekno\Mail\Support\MailConfigFactory;
+use Nuewire\Mail\Support\EncryptedJsonSettingsStore;
+use Nuewire\Mail\Support\MailConfigFactory;
 
 final class MailConfigFactoryTest extends TestCase
 {

@@ -1,21 +1,21 @@
-# Btekno Mail
+# Nuewire Mail
 
 Mail driver settings for Laravel and Livewire.
 
 ## Install
 
 ```bash
-composer require btekno/mail
+composer require nuewire/mail
 php artisan optimize:clear
 ```
 
 ## Component
 
 ```blade
-<livewire:btekno::mail />
+<livewire:nuewire::mail />
 ```
 
-With `btekno/platform`, the page appears automatically under admin settings.
+With `nuewire/platform`, the page appears automatically under admin settings.
 
 ## Drivers
 
@@ -33,7 +33,7 @@ With `btekno/platform`, the page appears automatically under admin settings.
 Settings are encrypted at:
 
 ```text
-storage/app/private/.btekno/emails.json
+storage/app/private/.nuewire/emails.json
 ```
 
 ## Usage
@@ -47,7 +47,7 @@ Mail::to('user@example.com')->send(new InvoiceReady());
 Use the package mailer explicitly:
 
 ```php
-Mail::mailer('btekno')->to('user@example.com')->send(new InvoiceReady());
+Mail::mailer('nuewire')->to('user@example.com')->send(new InvoiceReady());
 ```
 
 The initial driver is `log`.
@@ -57,21 +57,21 @@ The initial driver is `log`.
 The component requires authentication by default.
 
 ```env
-BTEKNO_MAIL_GATE=manage-email-settings
+NUEWIRE_MAIL_GATE=manage-email-settings
 ```
 
 ## Publish
 
 ```bash
-php artisan vendor:publish --tag=btekno-mail-config
-php artisan vendor:publish --tag=btekno-mail-views
-php artisan vendor:publish --tag=btekno-mail-translations
+php artisan vendor:publish --tag=nuewire-mail-config
+php artisan vendor:publish --tag=nuewire-mail-views
+php artisan vendor:publish --tag=nuewire-mail-translations
 ```
 
 Config path:
 
 ```text
-config/btekno/mail.php
+config/nuewire/mail.php
 ```
 
 Restart queue or Octane workers after changing drivers.

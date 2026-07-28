@@ -1,5 +1,5 @@
 {
-    "name": "btekno/mail",
+    "name": "nuewire/mail",
     "description": "Encrypted, file-based Laravel mail settings with a single Livewire component.",
     "keywords": [
         "laravel",
@@ -13,7 +13,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Btekno"
+            "name": "Nuewire"
         }
     ],
     "require": {
@@ -40,18 +40,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Btekno\\Mail\\": "src/"
+            "Nuewire\\Mail\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Btekno\\Mail\\Tests\\": "tests/"
+            "Nuewire\\Mail\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Btekno\\Mail\\MailServiceProvider"
+                "Nuewire\\Mail\\MailServiceProvider"
             ]
         }
     },
@@ -61,6 +61,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "suggest": {
-        "btekno/platform": "Adds the shared Btekno admin layout and navigation."
+        "nuewire/platform": "Adds the shared Nuewire admin layout and navigation."
     }
 }

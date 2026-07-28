@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail;
+namespace Nuewire\Mail;
 
-use Btekno\Mail\Livewire\Settings;
-use Btekno\Mail\Support\ConnectionTester;
-use Btekno\Mail\Support\EncryptedJsonSettingsStore;
-use Btekno\Mail\Support\MailConfigFactory;
-use Btekno\Mail\Support\RuntimeMailConfigurator;
+use Nuewire\Mail\Livewire\Settings;
+use Nuewire\Mail\Support\ConnectionTester;
+use Nuewire\Mail\Support\EncryptedJsonSettingsStore;
+use Nuewire\Mail\Support\MailConfigFactory;
+use Nuewire\Mail\Support\RuntimeMailConfigurator;
 use Illuminate\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
@@ -17,11 +17,11 @@ use Psr\Log\LoggerInterface;
 
 final class MailServiceProvider extends ServiceProvider
 {
-    private const CONFIG_KEY = 'btekno.mail';
+    private const CONFIG_KEY = 'nuewire.mail';
 
     public function register(): void
     {
-        $this->replaceConfigRecursivelyFrom(__DIR__.'/../config/btekno/mail.php', self::CONFIG_KEY);
+        $this->replaceConfigRecursivelyFrom(__DIR__.'/../config/nuewire/mail.php', self::CONFIG_KEY);
         /** @var Repository $config */
         $config = $this->app->make('config');
 
@@ -61,23 +61,23 @@ final class MailServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'btekno-mail');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'btekno-mail');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nuewire-mail');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-mail');
 
         $this->registerLivewireComponent();
         $this->registerPlatformNavigation();
 
         $this->publishes([
-            __DIR__.'/../config/btekno/mail.php' => config_path('btekno/mail.php'),
-        ], 'btekno-mail-config');
+            __DIR__.'/../config/nuewire/mail.php' => config_path('nuewire/mail.php'),
+        ], 'nuewire-mail-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/btekno-mail'),
-        ], 'btekno-mail-views');
+            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire-mail'),
+        ], 'nuewire-mail-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/btekno-mail'),
-        ], 'btekno-mail-translations');
+            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire-mail'),
+        ], 'nuewire-mail-translations');
     }
 
     private function registerLivewireComponent(): void
@@ -86,7 +86,7 @@ final class MailServiceProvider extends ServiceProvider
 
         if (method_exists($livewire, 'addNamespace')) {
             Livewire::resolveMissingComponent(
-                static fn (string $name): ?string => $name === 'btekno::mail'
+                static fn (string $name): ?string => $name === 'nuewire::mail'
                     ? Settings::class
                     : null,
             );
@@ -94,12 +94,12 @@ final class MailServiceProvider extends ServiceProvider
             return;
         }
 
-        Livewire::component('btekno::mail', Settings::class);
+        Livewire::component('nuewire::mail', Settings::class);
     }
 
     private function registerPlatformNavigation(): void
     {
-        $registryClass = 'Btekno\\Platform\\Navigation\\NavigationRegistry';
+        $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
 
         if (! $this->app->bound($registryClass)) {
             return;
@@ -109,7 +109,7 @@ final class MailServiceProvider extends ServiceProvider
             'label' => ['id' => 'Email', 'en' => 'Mail'],
             'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
             'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-            'component' => 'btekno::mail',
+            'component' => 'nuewire::mail',
             'icon' => 'M',
             'order' => 30,
         ]);

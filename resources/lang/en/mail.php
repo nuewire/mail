@@ -93,7 +93,7 @@ return [
     ],
 
     'test' => [
-        'subject' => 'Btekno Email Test',
+        'subject' => 'Nuewire Email Test',
         'body' => 'Email delivery through the :driver driver succeeded.',
     ],
 

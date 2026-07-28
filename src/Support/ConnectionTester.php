@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Support;
+namespace Nuewire\Mail\Support;
 
 use Illuminate\Mail\MailManager;
 use Illuminate\Mail\Message;
@@ -19,7 +19,7 @@ final class ConnectionTester
     public function send(array $settings, string $recipient, string $subject, string $body): void
     {
         $config = $this->factory->make($settings);
-        $mailer = $this->mail->build(['name' => 'btekno-test', ...$config]);
+        $mailer = $this->mail->build(['name' => 'nuewire-test', ...$config]);
 
         $mailer->raw($body, function (Message $message) use ($recipient, $subject, $config): void {
             $message->to($recipient)->subject($subject);

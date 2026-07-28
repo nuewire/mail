@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Tests;
+namespace Nuewire\Mail\Tests;
 
-use Btekno\Mail\Support\EncryptedJsonSettingsStore;
+use Nuewire\Mail\Support\EncryptedJsonSettingsStore;
 
 final class EncryptedJsonSettingsStoreTest extends TestCase
 {
@@ -25,12 +25,12 @@ final class EncryptedJsonSettingsStoreTest extends TestCase
         self::assertSame('re_private_test_key', $store->read()['drivers']['resend']['key']);
     }
 
-    public function test_it_uses_the_shared_btekno_directory(): void
+    public function test_it_uses_the_shared_nuewire_directory(): void
     {
         $store = app(EncryptedJsonSettingsStore::class);
 
         self::assertSame(
-            $this->app->storagePath('app/private/.btekno/emails.json'),
+            $this->app->storagePath('app/private/.nuewire/emails.json'),
             $store->path(),
         );
     }

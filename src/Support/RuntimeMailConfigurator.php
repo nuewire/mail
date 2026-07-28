@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Support;
+namespace Nuewire\Mail\Support;
 
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Container\Container;
@@ -25,12 +25,12 @@ final class RuntimeMailConfigurator
     public function apply(?array $settings = null): void
     {
         $settings ??= $this->safeSettings();
-        $mailer = (string) $this->config->get('btekno.mail.mailer', 'btekno');
-        $fallback = (string) $this->config->get('btekno.mail.host_default_mailer', 'log');
+        $mailer = (string) $this->config->get('nuewire.mail.mailer', 'nuewire');
+        $fallback = (string) $this->config->get('nuewire.mail.host_default_mailer', 'log');
 
         $this->config->set("mail.mailers.{$mailer}", $this->factory->make($settings));
-        $this->config->set('btekno.mail.active_driver', (string) ($settings['active'] ?? 'log'));
-        $this->config->set('btekno.mail.active_mailer', $mailer);
+        $this->config->set('nuewire.mail.active_driver', (string) ($settings['active'] ?? 'log'));
+        $this->config->set('nuewire.mail.active_mailer', $mailer);
 
         if ((bool) ($settings['set_as_default'] ?? true)) {
             $this->config->set('mail.default', $mailer);
@@ -47,7 +47,7 @@ final class RuntimeMailConfigurator
         try {
             return $this->store->read();
         } catch (Throwable $exception) {
-            $this->logger->warning('Btekno mail settings could not be loaded. Log mailer is active.', [
+            $this->logger->warning('Nuewire mail settings could not be loaded. Log mailer is active.', [
                 'exception' => $exception::class,
             ]);
 

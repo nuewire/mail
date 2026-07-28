@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Support;
+namespace Nuewire\Mail\Support;
 
 use InvalidArgumentException;
 

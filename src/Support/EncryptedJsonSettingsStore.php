@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Support;
+namespace Nuewire\Mail\Support;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -33,29 +33,29 @@ final class EncryptedJsonSettingsStore
                 $envelope = json_decode($this->files->get($this->path), true, 512, JSON_THROW_ON_ERROR);
 
                 if (! is_array($envelope) || ! is_string($envelope['ciphertext'] ?? null)) {
-                    throw new RuntimeException('Invalid Btekno mail settings envelope.');
+                    throw new RuntimeException('Invalid Nuewire mail settings envelope.');
                 }
 
                 $payload = $this->encrypter()->decryptString($envelope['ciphertext']);
                 $settings = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
 
                 if (! is_array($settings)) {
-                    throw new RuntimeException('Invalid Btekno mail settings payload.');
+                    throw new RuntimeException('Invalid Nuewire mail settings payload.');
                 }
 
                 return array_replace_recursive($this->defaults(), $settings);
             } catch (JsonException $exception) {
-                throw new RuntimeException('Invalid JSON in Btekno mail settings.', 0, $exception);
+                throw new RuntimeException('Invalid JSON in Nuewire mail settings.', 0, $exception);
             } catch (DecryptException $exception) {
                 throw new RuntimeException(
-                    'Btekno mail settings could not be decrypted. Check APP_KEY and APP_PREVIOUS_KEYS.',
+                    'Nuewire mail settings could not be decrypted. Check APP_KEY and APP_PREVIOUS_KEYS.',
                     0,
                     $exception,
                 );
             } catch (RuntimeException $exception) {
                 throw $exception;
             } catch (Throwable $exception) {
-                throw new RuntimeException('Btekno mail settings could not be read.', 0, $exception);
+                throw new RuntimeException('Nuewire mail settings could not be read.', 0, $exception);
             }
         });
     }
@@ -77,7 +77,7 @@ final class EncryptedJsonSettingsStore
                 $temporary = $this->path.'.tmp.'.bin2hex(random_bytes(8));
 
                 if ($this->files->put($temporary, $envelope, true) === false) {
-                    throw new RuntimeException('Btekno mail settings could not be written.');
+                    throw new RuntimeException('Nuewire mail settings could not be written.');
                 }
 
                 @chmod($temporary, 0600);
@@ -88,12 +88,12 @@ final class EncryptedJsonSettingsStore
 
                 if (! @rename($temporary, $this->path)) {
                     $this->files->delete($temporary);
-                    throw new RuntimeException('Btekno mail settings could not be moved into place.');
+                    throw new RuntimeException('Nuewire mail settings could not be moved into place.');
                 }
 
                 @chmod($this->path, 0600);
             } catch (JsonException $exception) {
-                throw new RuntimeException('Btekno mail settings could not be encoded.', 0, $exception);
+                throw new RuntimeException('Nuewire mail settings could not be encoded.', 0, $exception);
             }
         });
     }
@@ -117,7 +117,7 @@ final class EncryptedJsonSettingsStore
         return [
             'version' => 1,
             'active' => 'log',
-            'set_as_default' => (bool) config('btekno.mail.set_as_default', true),
+            'set_as_default' => (bool) config('nuewire.mail.set_as_default', true),
             'from' => [
                 'address' => $fromAddress,
                 'name' => $fromName,
@@ -183,12 +183,12 @@ final class EncryptedJsonSettingsStore
         $handle = @fopen($lockPath, 'c+');
 
         if ($handle === false) {
-            throw new RuntimeException('Btekno mail settings lock could not be opened.');
+            throw new RuntimeException('Nuewire mail settings lock could not be opened.');
         }
 
         try {
             if (! flock($handle, $operation)) {
-                throw new RuntimeException('Btekno mail settings lock could not be acquired.');
+                throw new RuntimeException('Nuewire mail settings lock could not be acquired.');
             }
 
             return $callback();

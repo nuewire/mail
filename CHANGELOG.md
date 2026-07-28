@@ -4,4 +4,4 @@
 
 - SMTP, Sendmail, SES, Mailgun, Postmark, Resend, Log, and Array.
 - Encrypted JSON settings.
-- Shared Btekno Livewire component.
+- Shared Nuewire Livewire component.

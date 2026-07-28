@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Btekno\Mail\Livewire;
+namespace Nuewire\Mail\Livewire;
 
-use Btekno\Mail\Support\ConnectionTester;
-use Btekno\Mail\Support\EncryptedJsonSettingsStore;
-use Btekno\Mail\Support\RuntimeMailConfigurator;
+use Nuewire\Mail\Support\ConnectionTester;
+use Nuewire\Mail\Support\EncryptedJsonSettingsStore;
+use Nuewire\Mail\Support\RuntimeMailConfigurator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Lang;
@@ -85,9 +85,9 @@ final class Settings extends Component
     {
         $this->locale = $this->resolveLocale($locale);
 
-        if ((bool) config('btekno.mail.remember_locale', true)) {
+        if ((bool) config('nuewire.mail.remember_locale', true)) {
             try {
-                session()->put((string) config('btekno.mail.locale_session_key'), $this->locale);
+                session()->put((string) config('nuewire.mail.locale_session_key'), $this->locale);
             } catch (Throwable) {
                 // Session middleware is optional for embedded components.
             }
@@ -157,11 +157,11 @@ final class Settings extends Component
 
     public function render()
     {
-        return view('btekno-mail::livewire.settings', [
+        return view('nuewire-mail::livewire.settings', [
             'driverOptions' => $this->driverOptions(),
             'localeOptions' => $this->localeOptions(),
-            'activeDriver' => (string) config('btekno.mail.active_driver', 'log'),
-            'activeMailer' => (string) config('btekno.mail.active_mailer', 'btekno'),
+            'activeDriver' => (string) config('nuewire.mail.active_driver', 'log'),
+            'activeMailer' => (string) config('nuewire.mail.active_mailer', 'nuewire'),
         ]);
     }
 
@@ -337,15 +337,15 @@ final class Settings extends Component
 
     private function authorizeAccess(): void
     {
-        $guard = config('btekno.mail.authorization.guard');
+        $guard = config('nuewire.mail.authorization.guard');
         $auth = is_string($guard) && $guard !== '' ? Auth::guard($guard) : Auth::guard();
-        $requireAuth = (bool) config('btekno.mail.authorization.require_authenticated_user', true);
+        $requireAuth = (bool) config('nuewire.mail.authorization.require_authenticated_user', true);
 
         if ($requireAuth && ! $auth->check()) {
             abort(403);
         }
 
-        $gate = config('btekno.mail.authorization.gate');
+        $gate = config('nuewire.mail.authorization.gate');
 
         if (is_string($gate) && $gate !== '') {
             $user = $auth->user();
@@ -384,7 +384,7 @@ final class Settings extends Component
     /** @return list<string> */
     private function supportedLocales(): array
     {
-        $configured = config('btekno.mail.supported_locales', ['id', 'en']);
+        $configured = config('nuewire.mail.supported_locales', ['id', 'en']);
         $locales = is_array($configured) ? $configured : ['id', 'en'];
         $locales = array_values(array_filter(array_map(
             static fn (mixed $locale): string => strtolower(trim((string) $locale)),
@@ -400,9 +400,9 @@ final class Settings extends Component
             return $this->normalizeLocale($requested);
         }
 
-        if ((bool) config('btekno.mail.remember_locale', true)) {
+        if ((bool) config('nuewire.mail.remember_locale', true)) {
             try {
-                $stored = session()->get((string) config('btekno.mail.locale_session_key'));
+                $stored = session()->get((string) config('nuewire.mail.locale_session_key'));
 
                 if (is_string($stored) && $stored !== '') {
                     return $this->normalizeLocale($stored);
@@ -412,7 +412,7 @@ final class Settings extends Component
             }
         }
 
-        return $this->normalizeLocale((string) config('btekno.mail.locale', 'id'));
+        return $this->normalizeLocale((string) config('nuewire.mail.locale', 'id'));
     }
 
     private function normalizeLocale(string $locale): string
@@ -426,7 +426,7 @@ final class Settings extends Component
     /** @param array<string, scalar> $replace */
     private function translate(string $key, array $replace = []): string
     {
-        return Lang::get("btekno-mail::mail.{$key}", $replace, $this->locale);
+        return Lang::get("nuewire-mail::mail.{$key}", $replace, $this->locale);
     }
 
     /** @param array<string, scalar> $replace */
