@@ -16,7 +16,7 @@ return [
     'reply_to_name' => 'Reply-to name',
     'optional' => 'Optional',
     'secret_saved' => 'Saved. Leave blank to keep it.',
-    'test' => 'Test Email',
+    'test_heading' => 'Test Email',
     'test_recipient' => 'Recipient email',
     'send_test' => 'Send test',
     'save' => 'Save',

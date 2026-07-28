@@ -11,6 +11,7 @@ final class ComponentRegistrationTest extends TestCase
     public function test_the_settings_component_is_registered(): void
     {
         Livewire::test('nuewire::mail')
-            ->assertSee('Pengaturan Email');
+            ->assertSee('Pengaturan Email')
+            ->assertSee('Uji Email');
     }
 }

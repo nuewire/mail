@@ -115,7 +115,7 @@
             </section>
 
             <section class="bte-section">
-                <h3>{{ __('nuewire-mail::mail.test', [], $locale) }}</h3>
+                <h3>{{ __('nuewire-mail::mail.test_heading', [], $locale) }}</h3>
                 <div class="bte-test">
                     <input class="bte-input" type="email" wire:model="testRecipient" placeholder="email@example.com">
                     <button class="bte-button" type="button" wire:click="sendTest" wire:loading.attr="disabled" wire:target="sendTest">

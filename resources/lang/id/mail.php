@@ -16,7 +16,7 @@ return [
     'reply_to_name' => 'Nama balasan',
     'optional' => 'Opsional',
     'secret_saved' => 'Tersimpan. Kosongkan untuk tetap memakai nilai lama.',
-    'test' => 'Uji Email',
+    'test_heading' => 'Uji Email',
     'test_recipient' => 'Email tujuan',
     'send_test' => 'Kirim uji',
     'save' => 'Simpan',
