@@ -12,7 +12,8 @@ use Nuewire\Mail\Support\RuntimeMailConfigurator;
 use Illuminate\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
+use Nuewire\Support\LivewireComponentRegistrar;
+use Nuewire\Support\NuewirePaths;
 use Psr\Log\LoggerInterface;
 
 final class MailServiceProvider extends ServiceProvider
@@ -64,35 +65,29 @@ final class MailServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $paths = $this->app->make(NuewirePaths::class);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nuewire-mail');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-mail');
 
         $this->registerLivewireComponent();
 
         $this->publishes([
-            __DIR__.'/../config/nuewire/mail.php' => config_path('nuewire/mail.php'),
+            __DIR__.'/../config/nuewire/mail.php' => $paths->configFile('mail'),
         ], 'nuewire-mail-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire/mail'),
+            __DIR__.'/../resources/views' => $paths->publishedViews('mail'),
         ], 'nuewire-mail-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire/mail'),
+            __DIR__.'/../resources/lang' => $paths->publishedTranslations('mail'),
         ], 'nuewire-mail-translations');
     }
 
     private function registerLivewireComponent(): void
     {
-        $livewire = $this->app->make('livewire');
-
-        if (method_exists($livewire, 'addComponent')) {
-            $livewire->addComponent('nuewire::mail', null, Settings::class);
-
-            return;
-        }
-
-        Livewire::component('nuewire::mail', Settings::class);
+        $registrar = $this->app->make(LivewireComponentRegistrar::class);
+        $registrar->register('nuewire::mail', Settings::class);
     }
 
     private function registerPlatformNavigation(): void

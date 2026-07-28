@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Adopted shared Nuewire path and Livewire registration utilities.
+
 ## 1.1.0
 
 - Register ACL permissions when nuewire/acl is installed.
