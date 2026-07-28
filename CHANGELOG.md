@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Publish views and translations under the shared `vendor/nuewire/mail` directory.
+
 ## 1.0.2
 
 - Fix the email settings page translation key collision.

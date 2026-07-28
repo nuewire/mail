@@ -73,11 +73,11 @@ final class MailServiceProvider extends ServiceProvider
         ], 'nuewire-mail-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire-mail'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire/mail'),
         ], 'nuewire-mail-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire-mail'),
+            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire/mail'),
         ], 'nuewire-mail-translations');
     }
 

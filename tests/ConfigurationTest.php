@@ -27,4 +27,26 @@ final class ConfigurationTest extends TestCase
 
         self::assertContains(config_path('nuewire/mail.php'), array_values($paths));
     }
+
+    public function test_views_and_translations_use_the_shared_vendor_directory(): void
+    {
+        $viewPaths = ServiceProvider::pathsToPublish(
+            MailServiceProvider::class,
+            'nuewire-mail-views',
+        );
+
+        $translationPaths = ServiceProvider::pathsToPublish(
+            MailServiceProvider::class,
+            'nuewire-mail-translations',
+        );
+
+        self::assertContains(
+            resource_path('views/vendor/nuewire/mail'),
+            array_values($viewPaths),
+        );
+        self::assertContains(
+            lang_path('vendor/nuewire/mail'),
+            array_values($translationPaths),
+        );
+    }
 }
