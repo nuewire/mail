@@ -56,6 +56,8 @@ final class MailServiceProvider extends ServiceProvider
             );
         });
 
+        $this->registerPlatformNavigation();
+
         $this->app->make(RuntimeMailConfigurator::class)->apply();
     }
 
@@ -65,7 +67,6 @@ final class MailServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-mail');
 
         $this->registerLivewireComponent();
-        $this->registerPlatformNavigation();
 
         $this->publishes([
             __DIR__.'/../config/nuewire/mail.php' => config_path('nuewire/mail.php'),
@@ -101,17 +102,19 @@ final class MailServiceProvider extends ServiceProvider
     {
         $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
 
-        if (! $this->app->bound($registryClass)) {
-            return;
-        }
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'register')) {
+                return;
+            }
 
-        $this->app->make($registryClass)->register('mail', [
-            'label' => ['id' => 'Email', 'en' => 'Mail'],
-            'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
-            'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-            'component' => 'nuewire::mail',
-            'icon' => 'M',
-            'order' => 30,
-        ]);
+            $registry->register('mail', [
+                'label' => ['id' => 'Email', 'en' => 'Mail'],
+                'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
+                'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
+                'component' => 'nuewire::mail',
+                'icon' => 'M',
+                'order' => 30,
+            ]);
+        });
     }
 }
