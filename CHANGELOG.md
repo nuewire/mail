@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Register ACL permissions when nuewire/acl is installed.
+
 ## 1.0.3
 
 - Publish views and translations under the shared `vendor/nuewire/mail` directory.

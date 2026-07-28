@@ -57,6 +57,7 @@ final class MailServiceProvider extends ServiceProvider
         });
 
         $this->registerPlatformNavigation();
+        $this->registerAclPermissions();
 
         $this->app->make(RuntimeMailConfigurator::class)->apply();
     }
@@ -85,12 +86,8 @@ final class MailServiceProvider extends ServiceProvider
     {
         $livewire = $this->app->make('livewire');
 
-        if (method_exists($livewire, 'addNamespace')) {
-            Livewire::resolveMissingComponent(
-                static fn (string $name): ?string => $name === 'nuewire::mail'
-                    ? Settings::class
-                    : null,
-            );
+        if (method_exists($livewire, 'addComponent')) {
+            $livewire->addComponent('nuewire::mail', null, Settings::class);
 
             return;
         }
@@ -112,9 +109,26 @@ final class MailServiceProvider extends ServiceProvider
                 'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
                 'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
                 'component' => 'nuewire::mail',
+                'permission' => 'mail.view',
                 'icon' => 'M',
                 'order' => 30,
             ]);
+        });
+    }
+
+    private function registerAclPermissions(): void
+    {
+        $registryClass = 'Nuewire\\Acl\\Registry\\PermissionRegistry';
+
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'registerMany')) {
+                return;
+            }
+
+            $registry->registerMany([
+                'mail.view' => ['id' => 'Melihat pengaturan email', 'en' => 'View mail settings'],
+                'mail.manage' => ['id' => 'Mengubah pengaturan email', 'en' => 'Manage mail settings'],
+            ], 'mail');
         });
     }
 }

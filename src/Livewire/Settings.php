@@ -98,7 +98,7 @@ final class Settings extends Component
         EncryptedJsonSettingsStore $store,
         RuntimeMailConfigurator $configurator,
     ): void {
-        $this->authorizeAccess();
+        $this->authorizeAccess('mail.manage');
 
         try {
             $settings = $this->settingsFromForm($store, false);
@@ -120,7 +120,7 @@ final class Settings extends Component
         EncryptedJsonSettingsStore $store,
         ConnectionTester $tester,
     ): void {
-        $this->authorizeAccess();
+        $this->authorizeAccess('mail.manage');
 
         try {
             $settings = $this->settingsFromForm($store, true);
@@ -150,7 +150,7 @@ final class Settings extends Component
         EncryptedJsonSettingsStore $store,
         RuntimeMailConfigurator $configurator,
     ): void {
-        $this->authorizeAccess();
+        $this->authorizeAccess('mail.manage');
         $this->driver = 'log';
         $this->save($store, $configurator);
     }
@@ -335,11 +335,24 @@ final class Settings extends Component
         $this->resendKey = '';
     }
 
-    private function authorizeAccess(): void
+    private function authorizeAccess(string $permission = 'mail.view'): void
     {
         $guard = config('nuewire.mail.authorization.guard');
         $auth = is_string($guard) && $guard !== '' ? Auth::guard($guard) : Auth::guard();
         $requireAuth = (bool) config('nuewire.mail.authorization.require_authenticated_user', true);
+        $user = $auth->user();
+
+        if (app()->bound('nuewire.acl.enabled')) {
+            if ($user === null || ! method_exists($user, 'can')) {
+                abort(403);
+            }
+
+            try {
+                abort_unless($user->can($permission), 403);
+            } catch (Throwable) {
+                abort(403);
+            }
+        }
 
         if ($requireAuth && ! $auth->check()) {
             abort(403);
