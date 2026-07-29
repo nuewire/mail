@@ -92,21 +92,38 @@ final class MailServiceProvider extends ServiceProvider
 
     private function registerPlatformNavigation(): void
     {
-        $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
+        $registryClass = 'Nuewire\Platform\Navigation\NavigationRegistry';
 
         $this->app->afterResolving($registryClass, static function (object $registry): void {
             if (! method_exists($registry, 'register')) {
                 return;
             }
 
-            $registry->register('mail', [
-                'label' => ['id' => 'Email', 'en' => 'Mail'],
+            if (! method_exists($registry, 'registerArea')) {
+                $registry->register('mail', [
+                    'label' => ['id' => 'Email', 'en' => 'Mail'],
+                    'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
+                    'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
+                    'component' => 'nuewire::mail',
+                    'permission' => 'mail.view',
+                    'icon' => 'M',
+                    'order' => 30,
+                ]);
+
+                return;
+            }
+
+            $registry->register('mail.settings', [
+                'area' => 'settings',
+                'group' => 'configuration',
+                'slug' => 'email',
+                'aliases' => ['mail'],
+                'label' => ['id' => 'Email', 'en' => 'Email'],
                 'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
-                'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
                 'component' => 'nuewire::mail',
                 'permission' => 'mail.view',
-                'icon' => 'M',
-                'order' => 30,
+                'icon' => 'mail',
+                'order' => 20,
             ]);
         });
     }

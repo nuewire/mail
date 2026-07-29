@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0
+
+- Registered Email as `mail.settings` under Settings → Configuration for Platform 2.
+- Added the canonical `email` slug with a legacy `mail` alias.
+
 ## 1.2.0
 
 - Adopted shared Nuewire path and Livewire registration utilities.

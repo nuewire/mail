@@ -15,7 +15,7 @@ php artisan optimize:clear
 <livewire:nuewire::mail />
 ```
 
-With `nuewire/platform`, the page appears automatically under admin settings.
+With `nuewire/platform` 2, the page appears under **Settings → Configuration → Email** at `/admin/settings/email`.
 
 ## Drivers
 
