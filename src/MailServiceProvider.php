@@ -58,6 +58,7 @@ final class MailServiceProvider extends ServiceProvider
         });
 
         $this->registerPlatformNavigation();
+        $this->registerPlatformDashboard();
         $this->registerAclPermissions();
 
         $this->app->make(RuntimeMailConfigurator::class)->apply();
@@ -124,6 +125,58 @@ final class MailServiceProvider extends ServiceProvider
                 'permission' => 'mail.view',
                 'icon' => 'mail',
                 'order' => 20,
+            ]);
+        });
+    }
+
+
+    private function registerPlatformDashboard(): void
+    {
+        $registryClass = 'Nuewire\\Platform\\Dashboard\\DashboardRegistry';
+
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'register')) {
+                return;
+            }
+
+            if (method_exists($registry, 'registerGroup')) {
+                $registry->registerGroup('communication', [
+                    'label' => ['id' => 'Komunikasi', 'en' => 'Communication'],
+                    'order' => 65,
+                ]);
+            }
+
+            $registry->register('mail.configuration-status', [
+                'group' => 'communication',
+                'label' => ['id' => 'Status Email', 'en' => 'Mail Status'],
+                'description' => ['id' => 'Driver email dan identitas pengirim yang aktif.', 'en' => 'Active mail driver and sender identity.'],
+                'type' => 'status',
+                'permission' => 'mail.view',
+                'width' => 4,
+                'default' => false,
+                'cache_ttl' => 120,
+                'cache_scope' => 'global',
+                'resolver' => static function (object $context): array {
+                    $store = app(\Nuewire\Mail\Support\EncryptedJsonSettingsStore::class);
+                    $settings = $store->read();
+                    $driver = (string) ($settings['active'] ?? config('nuewire.mail.active_driver', 'log'));
+                    $address = (string) data_get($settings, 'from.address', config('mail.from.address', ''));
+                    $safe = $driver !== '' && $address !== '';
+
+                    return [
+                        'status' => $safe ? ($driver === 'log' ? 'warning' : 'healthy') : 'danger',
+                        'headline' => strtoupper($driver !== '' ? $driver : 'N/A'),
+                        'message' => $driver === 'log'
+                            ? ($context->locale === 'en' ? 'Messages are written to the application log.' : 'Pesan ditulis ke log aplikasi.')
+                            : ($context->locale === 'en' ? 'Mail delivery is configured.' : 'Pengiriman email telah dikonfigurasi.'),
+                        'items' => [
+                            ['label' => $context->locale === 'en' ? 'From' : 'Pengirim', 'value' => $address !== '' ? $address : '—'],
+                            ['label' => $context->locale === 'en' ? 'Default mailer' : 'Mailer default', 'value' => (string) config('mail.default')],
+                        ],
+                        'url' => $context->route('settings', 'email'),
+                    ];
+                },
+                'order' => 10,
             ]);
         });
     }

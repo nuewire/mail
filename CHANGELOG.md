@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+- Added a mail configuration status dashboard widget without sending automatic test messages.
+
 ## 1.3.1
 
 - Replaced the `nuewire::mail` runtime alias with `nuewire-mail` for Livewire 4 compatibility.
