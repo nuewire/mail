@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- Replaced the `nuewire::mail` runtime alias with `nuewire-mail` for Livewire 4 compatibility.
+
 ## 1.3.0
 
 - Registered Email as `mail.settings` under Settings → Configuration for Platform 2.

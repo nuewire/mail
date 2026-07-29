@@ -87,7 +87,7 @@ final class MailServiceProvider extends ServiceProvider
     private function registerLivewireComponent(): void
     {
         $registrar = $this->app->make(LivewireComponentRegistrar::class);
-        $registrar->register('nuewire::mail', Settings::class);
+        $registrar->register('nuewire-mail', Settings::class);
     }
 
     private function registerPlatformNavigation(): void
@@ -104,7 +104,7 @@ final class MailServiceProvider extends ServiceProvider
                     'label' => ['id' => 'Email', 'en' => 'Mail'],
                     'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
                     'group' => ['id' => 'Pengaturan', 'en' => 'Settings'],
-                    'component' => 'nuewire::mail',
+                    'component' => 'nuewire-mail',
                     'permission' => 'mail.view',
                     'icon' => 'M',
                     'order' => 30,
@@ -120,7 +120,7 @@ final class MailServiceProvider extends ServiceProvider
                 'aliases' => ['mail'],
                 'label' => ['id' => 'Email', 'en' => 'Email'],
                 'description' => ['id' => 'Atur pengiriman email.', 'en' => 'Configure email delivery.'],
-                'component' => 'nuewire::mail',
+                'component' => 'nuewire-mail',
                 'permission' => 'mail.view',
                 'icon' => 'mail',
                 'order' => 20,

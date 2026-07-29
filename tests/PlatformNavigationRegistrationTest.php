@@ -21,7 +21,7 @@ final class PlatformNavigationRegistrationTest extends TestCase
         self::assertSame('settings', $registry->pages['mail.settings']['area']);
         self::assertSame('configuration', $registry->pages['mail.settings']['group']);
         self::assertSame('email', $registry->pages['mail.settings']['slug']);
-        self::assertSame('nuewire::mail', $registry->pages['mail.settings']['component']);
+        self::assertSame('nuewire-mail', $registry->pages['mail.settings']['component']);
     }
 }
 

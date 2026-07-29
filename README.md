@@ -12,7 +12,7 @@ php artisan optimize:clear
 ## Component
 
 ```blade
-<livewire:nuewire::mail />
+<livewire:nuewire-mail />
 ```
 
 With `nuewire/platform` 2, the page appears under **Settings → Configuration → Email** at `/admin/settings/email`.
